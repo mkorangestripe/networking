@@ -1,2 +1,13 @@
-## Python, Shell Scripts, and IaC for Linux Administration, DevOps, etc.
-See individual directories for script info and sample output.
+# Networking Scripts
+
+### pingscan.py
+###### Scan a network by pinging a CIDR range in parallel.
+###### Single CIDR range.
+<img src="sample-output/pingscan-cidr-cropped.png" alt="drawing" width="500"/>
+
+###### Multiple CIDR ranges from file.
+<img src="sample-output/pingscan-infile-cropped.png" alt="drawing" width="500"/>
+
+### chkdns.sh
+###### Compare the A record and PTR record of a host.
+![Output from chkdns.sh](sample-output/chkdns.png)
