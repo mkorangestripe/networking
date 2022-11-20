@@ -25,8 +25,12 @@ class Color:
 class PingScan:
     """Create ping processes, execute in parallel, and print results."""
 
-    def __init__(self, net_address):
+    def __init__(self, net_address, deadline_param):
         self.net_address = net_address
+        self.deadline_param = deadline_param
+        self.ip_list = []
+        self.jobs = []
+        self.response_by_ip = {}
 
     def generate_ip_addrs(self):
         """Generate the list of IP addresses to ping."""
@@ -35,24 +39,22 @@ class PingScan:
         except ValueError as e:
             print(e)
             sys.exit(1)
-        self.ip_list = list(ip_net.hosts())
+        self.ip_list.extend(list(ip_net.hosts()))
 
-    def run_ping_cmd(self, deadline_param, ip):
+    def run_ping_cmd(self, ip):
         """Run the ping command."""
-        ping_cmd = 'ping %s %s %s' % (deadline_param, args.deadline, ip)
+        ping_cmd = f"ping {self.deadline_param} {argparse_args.deadline} {ip}"
         return subprocess.Popen(ping_cmd,
                                 shell=True,
                                 stdout=subprocess.PIPE)
 
-    def create_ping_processes(self, deadline_param):
+    def create_ping_processes(self):
         """Create a ping subprocesses per IP address."""
-        self.jobs = []
-        self.response_by_ip = {}
         print('Starting ping of', self.net_address)
         for ip in self.ip_list:
             ip = str(ip)
             self.response_by_ip[ip] = ''
-            ping_process = self.run_ping_cmd(deadline_param, ip)
+            ping_process = self.run_ping_cmd(ip)
             self.jobs.append((ping_process, ip))
 
     def get_return_code_response(self):
@@ -79,9 +81,9 @@ class PingScan:
             ip = str(ip)
             ret_code = self.response_by_ip[ip][0]
             if ret_code == 0:
-                print('%s is %sup%s' % (ip, Color.green, Color.end))
+                print(f"{ip} is {Color.green}up{Color.end}")
             else:
-                print('%s is %sdown%s' % (ip, Color.red, Color.end))
+                print(f"{ip} is {Color.red}down{Color.end}")
         print()
 
     def print_stdout(self):
@@ -121,32 +123,32 @@ def _get_argparser():
 
 if __name__ == '__main__':
 
-    deadline_param = '-w'
+    platform_deadline_param = '-w'
     if platform.system() == 'Darwin':
-        deadline_param = '-t'
+        platform_deadline_param = '-t'
 
-    args = _get_argparser()
+    argparse_args = _get_argparser()
 
-    if args.infile is not None:
-        with open(args.infile) as infile:
+    if argparse_args.infile is not None:
+        with open(argparse_args.infile, encoding="utf-8") as infile:
             cidr_list = infile.read().split()
-    elif args.cidr is not None:
-        cidr_list = [args.cidr]
+    elif argparse_args.cidr is not None:
+        cidr_list = [argparse_args.cidr]
 
     for net_addr in cidr_list:
-        ping_scan = PingScan(net_addr)
+        ping_scan = PingScan(net_addr, platform_deadline_param)
         ping_scan.generate_ip_addrs()
-        ping_scan.create_ping_processes(deadline_param)
+        ping_scan.create_ping_processes()
         ping_scan.get_return_code_response()
 
-        if args.up is True:
+        if argparse_args.up is True:
             print('The following hosts are up.\n')
             ping_scan.print_ip_group(0)
-        elif args.down is True:
+        elif argparse_args.down is True:
             print('The following hosts are down.\n')
             ping_scan.print_ip_group(1)
         else:
             ping_scan.print_ips_state()
 
-        if args.verbose is True:
+        if argparse_args.verbose is True:
             ping_scan.print_stdout()
