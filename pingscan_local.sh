@@ -2,8 +2,8 @@
 
 # Useful symlinks and aliases:
 # cd ~/.local/bin
-# ln -s ~/src/mkorangestripe/devops/networking/pingscan.py pingscan
-# ln -s ~/src/mkorangestripe/devops/networking/pingscan_local.sh pingscan_local
+# ln -s ~/src/mkorangestripe/networking/pingscan.py pingscan
+# ln -s ~/src/mkorangestripe/networking/pingscan_local.sh pingscan_local
 # alias pingscan-27="pingscan_local 27"
 # alias pingscan-24="pingscan_local 24"
 
