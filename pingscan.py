@@ -123,9 +123,9 @@ def _get_argparser():
 
 if __name__ == '__main__':
 
-    platform_deadline_param = '-w'
+    PLATFORM_DEADLINE_PARAM = '-w'
     if platform.system() == 'Darwin':
-        platform_deadline_param = '-t'
+        PLATFORM_DEADLINE_PARAM = '-t'
 
     argparse_args = _get_argparser()
 
@@ -136,7 +136,7 @@ if __name__ == '__main__':
         cidr_list = [argparse_args.cidr]
 
     for net_addr in cidr_list:
-        ping_scan = PingScan(net_addr, platform_deadline_param)
+        ping_scan = PingScan(net_addr, PLATFORM_DEADLINE_PARAM)
         ping_scan.generate_ip_addrs()
         ping_scan.create_ping_processes()
         ping_scan.get_return_code_response()

@@ -104,7 +104,6 @@ unsafe-load-any-extension=no
 [BASIC]
 
 # Naming style matching correct argument names.
-; argument-naming-style=snake_case
 argument-naming-style=any
 
 # Regular expression matching correct argument names. Overrides argument-
@@ -156,8 +155,7 @@ class-naming-style=PascalCase
 #class-rgx=
 
 # Naming style matching correct constant names.
-; const-naming-style=UPPER_CASE
-const-naming-style=any
+const-naming-style=UPPER_CASE
 
 # Regular expression matching correct constant names. Overrides const-naming-
 # style. If left empty, constant names will be checked with the set naming
@@ -231,7 +229,6 @@ property-classes=abc.abstractproperty
 #typevar-rgx=
 
 # Naming style matching correct variable names.
-; variable-naming-style=snake_case
 variable-naming-style=any
 
 # Regular expression matching correct variable names. Overrides variable-
@@ -304,7 +301,6 @@ max-returns=6
 max-statements=50
 
 # Minimum number of public methods for a class (see R0903).
-; min-public-methods=2
 min-public-methods=0
 
 
@@ -331,7 +327,6 @@ indent-after-paren=4
 indent-string='    '
 
 # Maximum number of characters on a single line.
-; max-line-length=100
 max-line-length=174
 
 # Maximum number of lines in a module.
